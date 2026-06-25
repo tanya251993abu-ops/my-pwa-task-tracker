@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow</title>
+   <link rel="manifest" href="/manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- TODAY PAGE -->
+
+  <section class="page active" id="todayPage">
+
+    <header class="top-header">
+      <div class="avatar">
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div>
+        <p class="hello">Привет Танюшик!</p>
+        <h2>Мои задачи</h2>
+      </div>
+
+      <button class="icon-btn" id="openModal">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </header>
+
+
+    <div class="hero-card">
+
+      <div class="hero-icon">
+        <i class="fa-solid fa-list-check"></i>
+      </div>
+
+      <span class="badge">Сегодня</span>
+
+      <h1>Список задач</h1>
+
+      <div class="stats-row">
+
+        <div class="mini-card">
+          <h3 id="todayTotal">0</h3>
+          <span>Задач</span>
+        </div>
+
+        <div class="mini-card">
+          <h3 id="todayDone">0</h3>
+          <span>Готово</span>
+        </div>
+
+        <div class="mini-card">
+          <h3 id="todayPercent">0%</h3>
+          <span>Прогресс</span>
+        </div>
+
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+    </div>
+
+
+    <div class="categories">
+
+      <div class="category personal active-category" data-category="all">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Все</span>
+      </div>
+
+      <div class="category blue" data-category="personal">
+        <i class="fa-solid fa-heart"></i>
+        <span>Личное</span>
+      </div>
+
+      <div class="category orange" data-category="work">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>Работа</span>
+      </div>
+
+      <div class="category purple" data-category="study">
+        <i class="fa-solid fa-book"></i>
+        <span>Учеба</span>
+      </div>
+
+    </div>
+
+
+    <div class="section-title">
+      <h3>Сегодня</h3>
+      <button id="addTodayTask" class="add-task-day-btn">
+  Добавить задачу
+</button>
+    </div>
+
+    <div id="taskList"></div>
+
+  </section>
+
+
+
+  <!-- MONTH PAGE -->
+
+  <section class="page" id="monthPage">
+
+    <div class="month-header">
+      <h2>Месяц</h2>
+    </div>
+
+    <div class="calendar-card">
+
+      <div class="calendar-top">
+
+        <button id="prevMonth">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <h3 id="monthTitle"></h3>
+
+        <button id="nextMonth">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+      </div>
+
+      <div class="weekdays">
+        <span>Пн</span>
+        <span>Вт</span>
+        <span>Ср</span>
+        <span>Чт</span>
+        <span>Пт</span>
+        <span>Сб</span>
+        <span>Вс</span>
+      </div>
+
+      <div id="calendarGrid"></div>
+
+    </div>
+
+    <div class="selected-day-card">
+
+      <h3>Задачи дня</h3>
+
+      <div id="selectedDayTasks"></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- STATISTICS PAGE -->
+
+  <section class="page" id="statsPage">
+
+    <div class="stats-header">
+      <h2>Статистика</h2>
+    </div>
+
+    <div class="overview-card">
+
+      <div class="overview-top">
+        <h1 id="globalPercent">0%</h1>
+        <span>Выполнено</span>
+      </div>
+
+      <canvas id="activityChart"></canvas>
+
+    </div>
+
+    <div class="stat-grid">
+
+      <div class="stat-box">
+        <h3 id="allTasks">0</h3>
+        <span>Всего</span>
+      </div>
+
+      <div class="stat-box">
+        <h3 id="completedTasks">0</h3>
+        <span>Готово</span>
+      </div>
+
+      <div class="stat-box">
+        <h3 id="activeTasks">0</h3>
+        <span>Активно</span>
+      </div>
+
+    </div>
+
+
+    <div class="category-stats">
+
+      <div class="cat-row">
+        <span>Личное</span>
+        <div class="cat-bar">
+          <div id="personalBar"></div>
+        </div>
+      </div>
+
+      <div class="cat-row">
+        <span>Работа</span>
+        <div class="cat-bar">
+          <div id="workBar"></div>
+        </div>
+      </div>
+
+      <div class="cat-row">
+        <span>Учеба</span>
+        <div class="cat-bar">
+          <div id="studyBar"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active-nav" data-page="todayPage">
+      <i class="fa-solid fa-house"></i>
+      <span>Сегодня</span>
+    </button>
+
+    <button class="nav-btn" data-page="monthPage">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Месяц</span>
+    </button>
+
+    <button class="nav-btn" data-page="statsPage">
+      <i class="fa-solid fa-chart-simple"></i>
+      <span>Статистика</span>
+    </button>
+
+  </nav>
+
+</div>
+
+
+
+<!-- MODAL -->
+
+<div class="modal" id="taskModal">
+
+  <div class="modal-content">
+
+    <h2>Новая задача</h2>
+
+    <input
+      type="text"
+      id="taskInput"
+      placeholder="Название задачи"
+    >
+
+    <select id="categorySelect">
+      <option value="personal">Личное</option>
+      <option value="work">Работа</option>
+      <option value="study">Учеба</option>
+    </select>
+
+    <input
+      type="date"
+      id="taskDate"
+    >
+
+    <div class="modal-actions">
+
+      <button class="cancel-btn" id="closeModal">
+        Отмена
+      </button>
+
+      <button class="save-btn" id="saveTask">
+        Сохранить
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
