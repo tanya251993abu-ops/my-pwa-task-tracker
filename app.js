@@ -35,13 +35,13 @@ if (openModalBtn) {
     editingId = null;
     taskInput.value = "";
     taskDate.value = selectedDate || today;
-    modal.classList.add("show");
+    if (modal) modal.classList.add("show");
   });
 }
 
 if (closeModalBtn) {
   closeModalBtn.addEventListener("click", () => {
-    modal.classList.remove("show");
+    if (modal) modal.classList.remove("show");
   });
 }
 
@@ -83,7 +83,7 @@ if (saveTaskBtn) {
     renderAll();
     updateStats();
 
-    modal.classList.remove("show");
+    if (modal) modal.classList.remove("show");
   });
 }
 
@@ -195,7 +195,7 @@ window.editTask = function(id) {
   taskDate.value = task.date;
   categorySelect.value = task.category;
 
-  modal.classList.add("show");
+  if (modal) modal.classList.add("show");
 };
 
 /* =====================
@@ -312,7 +312,7 @@ function renderSelectedDay() {
       editingId = null;
       taskInput.value = "";
       taskDate.value = selectedDate;
-      modal.classList.add("show");
+      if (modal) modal.classList.add("show");
     };
   }
 }
@@ -435,8 +435,10 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.classList.add("active-nav");
 
     if (btn.dataset.page === "statsPage") {
-      drawChart();
-      updateStats();
+      setTimeout(() => {
+        drawChart();
+        updateStats();
+      }, 100);
     }
   });
 });
@@ -489,20 +491,6 @@ if (nextMonth) {
 }
 
 /* =====================
-   TODAY BUTTON
-===================== */
-
-const addTodayTask = document.getElementById("addTodayTask");
-if (addTodayTask) {
-  addTodayTask.addEventListener("click", () => {
-    editingId = null;
-    taskInput.value = "";
-    taskDate.value = today;
-    modal.classList.add("show");
-  });
-}
-
-/* =====================
    INIT
 ===================== */
 
@@ -514,8 +502,25 @@ function renderAll() {
   drawChart();
 }
 
+/* =====================
+   TODAY BUTTON
+===================== */
+
+// Ждем загрузки DOM перед инициализацией
 document.addEventListener('DOMContentLoaded', function() {
+  // Инициализируем все
   renderAll();
+  
+  // Находим кнопку "Добавить задачу" на сегодняшней странице
+  const addTodayTask = document.getElementById("addTodayTask");
+  if (addTodayTask) {
+    addTodayTask.addEventListener("click", () => {
+      editingId = null;
+      taskInput.value = "";
+      taskDate.value = today;
+      if (modal) modal.classList.add("show");
+    });
+  }
 });
 
 /* =====================
