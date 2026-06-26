@@ -30,62 +30,52 @@ const taskInput = document.getElementById("taskInput");
 const taskDate = document.getElementById("taskDate");
 const categorySelect = document.getElementById("categorySelect");
 
-if (openModalBtn) {
-  openModalBtn.addEventListener("click", () => {
-    editingId = null;
-    taskInput.value = "";
-    taskDate.value = selectedDate || today;
-    if (modal) modal.classList.add("show");
-  });
-}
+openModalBtn.addEventListener("click", () => {
+  editingId = null;
+  taskInput.value = "";
+  taskDate.value = selectedDate || today;
+  modal.classList.add("show");
+});
 
-if (closeModalBtn) {
-  closeModalBtn.addEventListener("click", () => {
-    if (modal) modal.classList.remove("show");
-  });
-}
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.remove("show");
+});
 
-if (modal) {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.classList.remove("show");
-  });
-}
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) modal.classList.remove("show");
+});
 
 /* =====================
    SAVE TASK
 ===================== */
 
-if (saveTaskBtn) {
-  saveTaskBtn.addEventListener("click", () => {
-    const title = taskInput.value.trim();
-    if (!title) return alert("Введите название задачи");
+saveTaskBtn.addEventListener("click", () => {
+  const title = taskInput.value.trim();
+  if (!title) return alert("Введите название задачи");
 
-    const taskData = {
-      title,
-      category: categorySelect.value,
-      date: taskDate.value,
-      completed: false
-    };
+  const taskData = {
+    title,
+    category: categorySelect.value,
+    date: taskDate.value,
+    completed: false
+  };
 
-    if (editingId) {
-      const i = tasks.findIndex(t => t.id === editingId);
-      if (i !== -1) {
-        tasks[i] = { ...tasks[i], ...taskData };
-      }
-    } else {
-      tasks.push({
-        id: Date.now(),
-        ...taskData
-      });
-    }
+  if (editingId) {
+    const i = tasks.findIndex(t => t.id === editingId);
+    tasks[i] = { ...tasks[i], ...taskData };
+  } else {
+    tasks.push({
+      id: Date.now(),
+      ...taskData
+    });
+  }
 
-    saveStorage();
-    renderAll();
-    updateStats();
+  saveStorage();
+  renderAll();
+  updateStats();
 
-    if (modal) modal.classList.remove("show");
-  });
-}
+  modal.classList.remove("show");
+});
 
 /* =====================
    CATEGORY (RU)
@@ -104,8 +94,6 @@ function categoryLabel(cat) {
 
 function renderTasks() {
   const list = document.getElementById("taskList");
-  if (!list) return;
-
   list.innerHTML = "";
 
   // FIX: применяем фильтр категории
@@ -168,13 +156,11 @@ function renderTasks() {
 
 window.toggleTask = function(id) {
   const task = tasks.find(t => t.id === id);
-  if (task) {
-    task.completed = !task.completed;
+  task.completed = !task.completed;
 
-    saveStorage();
-    renderAll();
-    updateStats();
-  }
+  saveStorage();
+  renderAll();
+  updateStats();
 };
 
 window.deleteTask = function(id) {
@@ -187,7 +173,6 @@ window.deleteTask = function(id) {
 
 window.editTask = function(id) {
   const task = tasks.find(t => t.id === id);
-  if (!task) return;
 
   editingId = id;
 
@@ -195,7 +180,7 @@ window.editTask = function(id) {
   taskDate.value = task.date;
   categorySelect.value = task.category;
 
-  if (modal) modal.classList.add("show");
+  modal.classList.add("show");
 };
 
 /* =====================
@@ -205,8 +190,6 @@ window.editTask = function(id) {
 function renderCalendar() {
   const grid = document.getElementById("calendarGrid");
   const title = document.getElementById("monthTitle");
-
-  if (!grid || !title) return;
 
   grid.innerHTML = "";
 
@@ -262,7 +245,6 @@ function renderCalendar() {
 
 function renderSelectedDay() {
   const container = document.getElementById("selectedDayTasks");
-  if (!container) return;
 
   const list = tasks.filter(t => t.date === selectedDate);
 
@@ -306,15 +288,12 @@ function renderSelectedDay() {
 
   container.innerHTML = html;
 
-  const addBtn = document.getElementById("addForDay");
-  if (addBtn) {
-    addBtn.onclick = () => {
-      editingId = null;
-      taskInput.value = "";
-      taskDate.value = selectedDate;
-      if (modal) modal.classList.add("show");
-    };
-  }
+  document.getElementById("addForDay").onclick = () => {
+    editingId = null;
+    taskInput.value = "";
+    taskDate.value = selectedDate;
+    modal.classList.add("show");
+  };
 }
 
 /* =====================
@@ -336,18 +315,16 @@ function updateStats() {
     todayTasks.length === 0 ? 0 :
     Math.round((todayDone / todayTasks.length) * 100);
 
-  const el = (id) => document.getElementById(id);
+  document.getElementById("todayTotal").textContent = todayTasks.length;
+  document.getElementById("todayDone").textContent = todayDone;
+  document.getElementById("todayPercent").textContent = todayPercent + "%";
 
-  if (el("todayTotal")) el("todayTotal").textContent = todayTasks.length;
-  if (el("todayDone")) el("todayDone").textContent = todayDone;
-  if (el("todayPercent")) el("todayPercent").textContent = todayPercent + "%";
+  document.getElementById("globalPercent").textContent = percent + "%";
+  document.getElementById("allTasks").textContent = total;
+  document.getElementById("completedTasks").textContent = completed;
+  document.getElementById("activeTasks").textContent = active;
 
-  if (el("globalPercent")) el("globalPercent").textContent = percent + "%";
-  if (el("allTasks")) el("allTasks").textContent = total;
-  if (el("completedTasks")) el("completedTasks").textContent = completed;
-  if (el("activeTasks")) el("activeTasks").textContent = active;
-
-  if (el("progressBar")) el("progressBar").style.width = todayPercent + "%";
+  document.getElementById("progressBar").style.width = todayPercent + "%";
 
   categoryStats();
   drawChart();
@@ -365,11 +342,9 @@ function categoryStats() {
   const work = tasks.filter(t => t.category === "work").length;
   const study = tasks.filter(t => t.category === "study").length;
 
-  const el = (id) => document.getElementById(id);
-  
-  if (el("personalBar")) el("personalBar").style.width = (personal / total) * 100 + "%";
-  if (el("workBar")) el("workBar").style.width = (work / total) * 100 + "%";
-  if (el("studyBar")) el("studyBar").style.width = (study / total) * 100 + "%";
+  document.getElementById("personalBar").style.width = (personal / total) * 100 + "%";
+  document.getElementById("workBar").style.width = (work / total) * 100 + "%";
+  document.getElementById("studyBar").style.width = (study / total) * 100 + "%";
 }
 
 /* =====================
@@ -382,7 +357,7 @@ function drawChart() {
 
   const ctx = canvas.getContext("2d");
 
-  canvas.width = canvas.offsetWidth || 400;
+  canvas.width = canvas.offsetWidth;
   canvas.height = 180;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -430,15 +405,12 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.querySelectorAll(".nav-btn").forEach(n => n.classList.remove("active-nav"));
 
-    const page = document.getElementById(btn.dataset.page);
-    if (page) page.classList.add("active");
+    document.getElementById(btn.dataset.page).classList.add("active");
     btn.classList.add("active-nav");
 
     if (btn.dataset.page === "statsPage") {
-      setTimeout(() => {
-        drawChart();
-        updateStats();
-      }, 100);
+      drawChart();
+      updateStats();
     }
   });
 });
@@ -465,30 +437,23 @@ document.querySelectorAll(".category").forEach(btn => {
    MONTH NAV FIX
 ===================== */
 
-const prevMonth = document.getElementById("prevMonth");
-const nextMonth = document.getElementById("nextMonth");
+document.getElementById("prevMonth").addEventListener("click", () => {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  renderCalendar();
+});
 
-if (prevMonth) {
-  prevMonth.addEventListener("click", () => {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    renderCalendar();
-  });
-}
-
-if (nextMonth) {
-  nextMonth.addEventListener("click", () => {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-    renderCalendar();
-  });
-}
+document.getElementById("nextMonth").addEventListener("click", () => {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  renderCalendar();
+});
 
 /* =====================
    INIT
@@ -502,30 +467,18 @@ function renderAll() {
   drawChart();
 }
 
+renderAll();
+
 /* =====================
    TODAY BUTTON
 ===================== */
 
-// Ждем загрузки DOM перед инициализацией
-document.addEventListener('DOMContentLoaded', function() {
-  // Инициализируем все
-  renderAll();
-  
-  // Находим кнопку "Добавить задачу" на сегодняшней странице
-  const addTodayTask = document.getElementById("addTodayTask");
-  if (addTodayTask) {
-    addTodayTask.addEventListener("click", () => {
-      editingId = null;
-      taskInput.value = "";
-      taskDate.value = today;
-      if (modal) modal.classList.add("show");
-    });
-  }
+document.getElementById("addTodayTask").addEventListener("click", () => {
+  editingId = null;
+  taskInput.value = "";
+  taskDate.value = today;
+  modal.classList.add("show");
 });
-
-/* =====================
-   SERVICE WORKER
-===================== */
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
