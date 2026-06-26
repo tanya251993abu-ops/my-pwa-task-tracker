@@ -1,9 +1,9 @@
 {
-  "name": "Трекер задач",
-  "short_name": "Трекер задач",
+  "name": "TaskFlow",
+  "short_name": "TaskFlow",
+  "start_url": "/my-pwa-task-tracker/",
   "display": "standalone",
-  "start_url": "/",
-  "icons":  { "src": "./icon-192.png", "sizes": "192x192" },
-    { "src": "./icon-512.png", "sizes": "512x512" }
-  ]
+  "background_color": "#c58cf7",
+  "theme_color": "#c58cf7",
+  "icons": []
 }
