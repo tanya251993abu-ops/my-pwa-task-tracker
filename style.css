@@ -219,7 +219,7 @@ body{
   cursor:pointer;
   transition:.25s;
   flex-shrink:0;
-  position: relative; /* Добавил для правильного отображения контура */
+  border: 3px solid transparent; /* Добавил прозрачную границу вместо outline */
 }
 
 .category:hover{
@@ -229,7 +229,7 @@ body{
 .category i{
   display:block;
   margin-bottom:5px;
-  font-size:18px; /* увеличил с 16px до 18px */
+  font-size:20px; /* увеличил с 18px до 20px */
 }
 
 .category span {
@@ -253,9 +253,8 @@ body{
 }
 
 .active-category{
-  outline:3px solid var(--primary);
-  outline-offset: 2px; /* Добавил отступ чтобы контур не обрезался */
-  border-radius: 22px; /* Добавил скругление для контура */
+  border-color: var(--primary); /* вместо outline используем border */
+  border-radius: 22px;
 }
 
 .section-title{
