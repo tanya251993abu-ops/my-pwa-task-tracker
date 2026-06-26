@@ -198,12 +198,13 @@ body{
 
 .categories{
   display:flex;
-  gap:10px;
+  gap:8px; /* уменьшил gap */
   padding:8px 4px;
   overflow:visible;
   margin-top:20px;
   padding-bottom:8px;
   flex-wrap: nowrap;
+  justify-content: space-between; /* равномерное распределение */
 }
 
 .categories::-webkit-scrollbar{
@@ -211,15 +212,15 @@ body{
 }
 
 .category{
-  min-width:85px;
+  flex: 1; /* все категории одинаковой ширины */
+  min-width: 0; /* разрешаем сжиматься */
   background:white;
   border-radius:22px;
-  padding:14px 18px;
+  padding:10px 6px; /* уменьшил отступы */
   text-align:center;
   box-shadow: none;
   cursor:pointer;
   transition:.25s;
-  flex-shrink:0;
   border: 3px solid transparent;
   position: relative;
   margin: 2px 0;
@@ -231,15 +232,15 @@ body{
 
 .category i{
   display:block;
-  margin-bottom:6px;
-  font-size:20px; /* уменьшил с 22px до 20px */
-  width: 30px;
+  margin-bottom:4px; /* уменьшил отступ */
+  font-size:16px; /* уменьшил иконки */
+  width: 24px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .category span {
-  font-size:13px;
+  font-size:11px; /* уменьшил текст */
   display: block;
 }
 
