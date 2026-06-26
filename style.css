@@ -199,10 +199,11 @@ body{
 .categories{
   display:flex;
   gap:10px;
-  padding:4px;
-  overflow:auto;
+  padding:8px 4px; /* добавил отступы сверху и снизу */
+  overflow:visible; /* меняем с auto на visible */
   margin-top:20px;
-  padding-bottom:5px;
+  padding-bottom:8px;
+  flex-wrap: nowrap;
 }
 
 .categories::-webkit-scrollbar{
@@ -210,16 +211,18 @@ body{
 }
 
 .category{
-  min-width:78px;
+  min-width:85px; /* чуть увеличил ширину */
   background:white;
   border-radius:22px;
-  padding:12px 14px;
+  padding:14px 18px; /* увеличил отступы чтобы иконки не касались краев */
   text-align:center;
   box-shadow: none;
   cursor:pointer;
   transition:.25s;
   flex-shrink:0;
-  border: 3px solid transparent; /* Добавил прозрачную границу вместо outline */
+  border: 3px solid transparent;
+  position: relative; /* для правильного позиционирования */
+  margin: 2px 0; /* добавил отступы сверху и снизу */
 }
 
 .category:hover{
@@ -228,12 +231,16 @@ body{
 
 .category i{
   display:block;
-  margin-bottom:5px;
-  font-size:20px; /* увеличил с 18px до 20px */
+  margin-bottom:6px;
+  font-size:22px; /* увеличил с 20px до 22px */
+  width: 30px; /* фиксированная ширина для центрирования */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .category span {
-  font-size:12px;
+  font-size:13px;
+  display: block;
 }
 
 .personal i{
@@ -253,8 +260,9 @@ body{
 }
 
 .active-category{
-  border-color: var(--primary); /* вместо outline используем border */
+  border-color: var(--primary);
   border-radius: 22px;
+  box-shadow: 0 0 0 3px rgba(197, 140, 247, 0.3); /* дополнительная подсветка */
 }
 
 .section-title{
